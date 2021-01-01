@@ -18,7 +18,7 @@ jobs:
       - name: Prepare image data
         id: image_data
         run: |
-          DOCKER_IMAGE=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')/plantgateway
+          DOCKER_IMAGE=ghcr.io/$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')/plantgateway
 
           VERSION=dev
           if [[ $GITHUB_REF == refs/tags/* ]]; then
