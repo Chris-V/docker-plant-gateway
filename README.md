@@ -5,7 +5,7 @@ This is a basic docker image for https://github.com/ChristianKuehnel/plantgatewa
 ## Command
 
 ```bash
-docker run -d --net host -e TZ=America/Toronto -v $(PWD)/plantgateway-config:/config ghcr.io/Chris-V/plant-gateway
+docker run -d --net host -e TZ=America/Toronto -v $(PWD)/plantgateway-config:/config ghcr.io/Chris-V/plantgateway
 ```
 
 On a first run, a sample plantgw.yaml file will be added to your config volume. Change that to your liking and restart the container.
