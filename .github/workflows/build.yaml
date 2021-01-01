@@ -7,6 +7,7 @@ on:
       - main
     tags:
       - v*.*.*
+      - v*.*.*-*
 
 jobs:
   buildx:
@@ -35,7 +36,11 @@ jobs:
           fi
 
           TAGS="${DOCKER_IMAGE}:${VERSION}"
-          if [[ $VERSION =~ ^v[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+          if [[ $VERSION =~ ^v[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}(-[0-9]{1,3})?$ ]]; then
+            if [[ $VERSION =~ ^v[0-9.]+-[0-9]{1,3}$ ]]; then
+              PATCH=${VERSION%-*}
+              TAGS="$TAGS,${DOCKER_IMAGE}:${PATCH}"
+            fi
             MINOR=${VERSION%.*}
             MAJOR=${MINOR%.*}
             TAGS="$TAGS,${DOCKER_IMAGE}:${MINOR},${DOCKER_IMAGE}:${MAJOR},${DOCKER_IMAGE}:latest"
@@ -77,6 +82,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
           context: .
           file: ./Dockerfile
+          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
           push: ${{ steps.image_data.outputs.push == 'true' }}
           tags: ${{ steps.image_data.outputs.tags }}
           labels: |
